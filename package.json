@@ -91,7 +91,10 @@
     "extends": [
       "react-app",
       "prettier"
-    ]
+    ],
+    "rules": {
+      "react-hooks/exhaustive-deps": 0
+    }
   },
   "browserslist": {
     "production": [
@@ -175,6 +178,7 @@
     "@types/react-sidebar": "^3.0.0",
     "@types/redux": "^3.6.0",
     "@types/styled-components": "^5.0.1",
+    "daum.maps.d.ts": "Musma/daum.maps.d.ts",
     "redux-devtools-extension": "^2.13.8"
   }
 }

@@ -4,6 +4,10 @@ import styled from 'styled-components';
 const HomeTemplateBlock = styled.div`
   .HomeTemplate {
   }
+
+  .Sidebar_Overlay {
+    z-index: 2 !important;
+  }
 `;
 
 interface HomeTemplateProps {}

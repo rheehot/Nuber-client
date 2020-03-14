@@ -8,11 +8,11 @@ const MapBlock = styled.div`
 `;
 
 interface MapProps {
-  targetRef: React.MutableRefObject<any>;
+  targetLoad: (element: HTMLDivElement | null) => void;
 }
-const Map: React.FC<MapProps> = ({ targetRef, children }) => {
+const Map: React.FC<MapProps> = ({ targetLoad, children }) => {
   return (
-    <MapBlock className="Map" ref={ref => (targetRef.current = ref)}>
+    <MapBlock className="Map" ref={targetLoad}>
       {children}
     </MapBlock>
   );
