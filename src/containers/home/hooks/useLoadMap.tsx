@@ -1,31 +1,35 @@
-import { useState, useEffect, MutableRefObject } from 'react';
+import { useEffect, useState } from 'react';
 import { loadScript } from '../../../libs/apollo/utils';
 
-function useLoadMap(targetRef: MutableRefObject<any>) {
-  const [loading, setLoading] = useState(false);
-  const [kakoMap, setKakaMap] = useState(null);
+interface MapState {
+  kakaoMapLoaded: boolean;
+  kakaoMapObj: any;
+}
+
+function useLoadMap() {
+  const [state, setState] = useState<MapState>({
+    kakaoMapLoaded: false,
+    kakaoMapObj: null,
+  });
 
   useEffect(() => {
-    setLoading(true);
-    if ((window as any).kakao) return;
-    loadScript(
-      'http://dapi.kakao.com/v2/maps/sdk.js?appkey=15ef3830746a44ccdb4a26b82bf509aa&libraries=services,clusterer,drawing&autoload=false',
-    ).then(() => {
+    const promise = async () => {
+      await loadScript(
+        'http://dapi.kakao.com/v2/maps/sdk.js?appkey=15ef3830746a44ccdb4a26b82bf509aa&libraries=services,clusterer,drawing&autoload=false',
+      );
       const Kakao = (window as any).kakao;
-      if (Kakao) {
-        setLoading(false);
-      }
-      const { maps } = Kakao;
-      maps.load(() => {
-        const node = new maps.Map(targetRef.current, {
-          center: new maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 3,
+      Kakao &&
+        Kakao.maps.load(() => {
+          setState({
+            kakaoMapLoaded: true,
+            kakaoMapObj: (window as any).kakao,
+          });
         });
-        setKakaMap(node);
-      });
-    });
+    };
+
+    promise();
   }, []);
-  return [(window as any).kakao, kakoMap, loading] as [any, any, boolean];
+  return [state];
 }
 
 export default useLoadMap;
