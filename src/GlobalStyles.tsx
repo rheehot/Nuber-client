@@ -20,6 +20,23 @@ html, body, #root {
   height: 100%;
   background: #fff;
 }
+
+button {
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  text-align: inherit;
+}
 `;
 
 export default GlobalStyles;

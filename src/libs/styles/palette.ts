@@ -43,6 +43,8 @@ const palette = {
   blue7: '#1c7ed6',
   blue8: '#1971c2',
   blue9: '#1864ab',
+  /* theme */
+  thme1: '#0f3758de',
 };
 
 export const buttonColorMap: {
