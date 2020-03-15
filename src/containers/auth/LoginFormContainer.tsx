@@ -1,8 +1,9 @@
 import React from 'react';
+import AuthModalContainer from './AuthModalContainer';
 import LoginForm from '../../components/auth/LoginForm';
 import { ProviderType } from '../../components/auth/AuthButton';
 
-type ModalState = {
+export type ModalState = {
   open: boolean;
   provider: ProviderType;
 };
@@ -14,30 +15,21 @@ const LoginFormContainer: React.FC<LoginFormContainerProps> = () => {
     provider: 'EMAIL',
   });
 
-  const onOpenModal = React.useCallback(
+  const onModalClick = React.useCallback(
     (provider: ProviderType) => {
       console.log(provider);
       setModal({
         provider,
-        open: true,
+        open: !modal.open,
       });
     },
-    [setModal],
-  );
-
-  const onCloseModal = React.useCallback(
-    (provider: ProviderType) => {
-      setModal({
-        provider,
-        open: false,
-      });
-    },
-    [setModal],
+    [modal.open, setModal],
   );
 
   return (
     <React.Fragment>
-      <LoginForm onModalClick={onOpenModal} />
+      <LoginForm onModalClick={onModalClick} />
+      <AuthModalContainer modal={modal} />
     </React.Fragment>
   );
 };
