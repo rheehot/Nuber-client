@@ -70,13 +70,13 @@ const providers = {
 
 interface AuthButtonProps {
   provider: ProviderType;
-  onModalClick?: (provider: ProviderType) => void;
+  onModal?: (provider: ProviderType, visible: boolean) => void;
   onSocialClick?: () => void;
 }
 
 const AuthButton: React.FC<AuthButtonProps> = ({
   provider,
-  onModalClick,
+  onModal,
   onSocialClick,
 }) => {
   const { text, icon: Icon } = providers[provider];
@@ -86,7 +86,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({
       switch (provider) {
         case 'EMAIL':
         case 'SMS':
-          onModalClick && onModalClick(provider);
+          onModal && onModal(provider, true);
           break;
         case 'KAKAO':
         case 'FACEBOOK':
@@ -96,7 +96,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({
           break;
       }
     },
-    [onModalClick, onSocialClick, provider],
+    [onModal, onSocialClick],
   );
 
   return (

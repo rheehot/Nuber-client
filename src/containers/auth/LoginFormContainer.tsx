@@ -15,21 +15,21 @@ const LoginFormContainer: React.FC<LoginFormContainerProps> = () => {
     provider: 'EMAIL',
   });
 
-  const onModalClick = React.useCallback(
-    (provider: ProviderType) => {
+  const onModal = React.useCallback(
+    (provider: ProviderType, visible: boolean) => {
       console.log(provider);
       setModal({
         provider,
-        open: !modal.open,
+        open: visible,
       });
     },
-    [modal.open, setModal],
+    [setModal],
   );
 
   return (
     <React.Fragment>
-      <LoginForm onModalClick={onModalClick} />
-      <AuthModalContainer modal={modal} />
+      <LoginForm onModal={onModal} />
+      <AuthModalContainer modal={modal} onModal={onModal} />
     </React.Fragment>
   );
 };

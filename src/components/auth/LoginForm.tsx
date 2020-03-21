@@ -44,9 +44,9 @@ const LoginFormBlock = styled.div`
 `;
 
 interface LoginFormProps {
-  onModalClick: (provider: ProviderType) => void;
+  onModal: (provider: ProviderType, visible: boolean) => void;
 }
-const LoginForm: React.FC<LoginFormProps> = ({ onModalClick }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onModal }) => {
   return (
     <LoginFormBlock className="LoginForm">
       <div className="Upper_Wrapper">
@@ -55,11 +55,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onModalClick }) => {
         </h2>
         <section>
           <h4>Email</h4>
-          <AuthButton provider="EMAIL" onModalClick={onModalClick} />
+          <AuthButton provider="EMAIL" onModal={onModal} />
         </section>
         <section>
           <h4>SMS</h4>
-          <AuthButton provider="SMS" onModalClick={onModalClick} />
+          <AuthButton provider="SMS" onModal={onModal} />
         </section>
         <section>
           <h4>SNS</h4>
