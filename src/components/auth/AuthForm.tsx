@@ -40,11 +40,24 @@ const AuthFormBlock = styled.div`
 
 interface AuthFormProps {
   provider: ProviderType;
+  email_registered: boolean;
+  sms_registered: boolean;
+  email_loading: boolean;
+  sms_loading: boolean;
+  onSendAuthEmail: (email: string) => Promise<void>;
+  onSendAuthSMS: (phone: string) => Promise<void>;
 }
-const AuthForm: React.FC<AuthFormProps> = ({ provider }) => {
+const AuthForm: React.FC<AuthFormProps> = ({
+  provider,
+  email_registered,
+  sms_registered,
+  sms_loading,
+  email_loading,
+  onSendAuthEmail,
+  onSendAuthSMS,
+}) => {
   const [email, onChangeEmail] = useInput('');
   const [phone, onChangePhone] = useInput('');
-  const registered = true;
   return (
     <AuthFormBlock>
       <div className="Upper_Wrapper">
@@ -55,25 +68,27 @@ const AuthForm: React.FC<AuthFormProps> = ({ provider }) => {
           </h4>
           {provider === 'EMAIL' ? (
             <>
-              {registered ? (
-                <AuthEmailSuccess registered={registered} />
+              {email_registered ? (
+                <AuthEmailSuccess registered={email_registered} />
               ) : (
                 <AuthEmailForm
                   email={email}
-                  registered={registered}
                   onChange={onChangeEmail}
+                  onSubmit={onSendAuthEmail}
+                  disabled={email_loading}
                 />
               )}
             </>
           ) : (
             <>
-              {registered ? (
-                <AuthPhoneSuccess registered={registered} />
+              {sms_registered ? (
+                <AuthPhoneSuccess registered={sms_registered} />
               ) : (
                 <AuthPhoneForm
                   phone={phone}
-                  registered={registered}
                   onChange={onChangePhone}
+                  onSubmit={onSendAuthSMS}
+                  disabled={sms_loading}
                 />
               )}
             </>

@@ -61,28 +61,31 @@ const AuthEmailFormBlock = styled.form`
 
 interface AuthEmailFormProps {
   email: string;
-  registered: boolean;
+  disabled: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (email: string) => Promise<void>;
 }
 const AuthEmailForm: React.FC<AuthEmailFormProps> = ({
   email,
-  registered,
+  disabled,
   onChange,
+  onSubmit,
 }) => {
   return (
     <AuthEmailFormBlock
       onSubmit={e => {
         e.preventDefault();
+        onSubmit(email);
       }}
     >
       <input
         value={email}
         tabIndex={2}
         placeholder="이메일을 입력하세요."
-        disabled={registered}
+        disabled={disabled}
         onChange={onChange}
       />
-      <button tabIndex={3} disabled={registered}>
+      <button tabIndex={3} disabled={disabled}>
         로그인
       </button>
       <div className="Form_Backgroun_Wrapper">

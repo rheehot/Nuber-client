@@ -78,6 +78,8 @@ const AuthModal: React.FC<AuthModalProps> = ({
   provider,
   onModal,
 }) => {
+  document.body.style.overflowY = visible ? 'hidden' : 'initial';
+
   const [closed, setClosed] = React.useState(true);
   React.useEffect(() => {
     let timeoutId: number | null = null;
@@ -92,6 +94,12 @@ const AuthModal: React.FC<AuthModalProps> = ({
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
+    };
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      document.body.style.overflowY = 'initial';
     };
   }, []);
 

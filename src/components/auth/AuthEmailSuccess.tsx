@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { MdCheck as CheckIcon } from 'react-icons/md';
 import palette from '../../libs/styles/palette';
+import { undrawSmallTown } from '../../static/images';
 
 const AuthEmailSuccessBlock = styled.div`
   display: flex;
@@ -20,6 +21,17 @@ const AuthEmailSuccessBlock = styled.div`
     flex: 1;
     text-align: center;
   }
+
+  .Form_Backgroun_Wrapper {
+    position: absolute;
+    bottom: 0;
+    padding-right: 2.25rem;
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
 `;
 
 interface AuthEmailSuccessProps {
@@ -31,6 +43,9 @@ const AuthEmailSuccess: React.FC<AuthEmailSuccessProps> = ({ registered }) => {
     <AuthEmailSuccessBlock>
       <CheckIcon className="icon" />
       <div className="description">{text} 링크가 이메일로 전송되었습니다.</div>
+      <div className="Form_Backgroun_Wrapper">
+        <img src={undrawSmallTown} alt="auth_form" />
+      </div>
     </AuthEmailSuccessBlock>
   );
 };

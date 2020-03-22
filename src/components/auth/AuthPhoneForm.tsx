@@ -80,16 +80,23 @@ const AuthPhoneFormBlock = styled.div`
 
 interface AuthPhoneFormProps {
   phone: string;
-  registered: boolean;
+  disabled: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (phone: string) => Promise<void>;
 }
 const AuthPhoneForm: React.FC<AuthPhoneFormProps> = ({
   phone,
-  registered,
+  disabled,
   onChange,
+  onSubmit,
 }) => {
   return (
-    <AuthPhoneFormBlock>
+    <AuthPhoneFormBlock
+      onSubmit={e => {
+        e.preventDefault();
+        onSubmit(phone);
+      }}
+    >
       <div className="Select_Wrapper">
         <select>
           {countries.map((country, index) => (
@@ -104,10 +111,10 @@ const AuthPhoneForm: React.FC<AuthPhoneFormProps> = ({
           placeholder="전화번호을 입력하세요"
           value={phone}
           tabIndex={2}
-          disabled={registered}
+          disabled={disabled}
           onChange={onChange}
         />
-        <button tabIndex={3} disabled={registered}>
+        <button tabIndex={3} disabled={disabled}>
           로그인
         </button>
       </div>
