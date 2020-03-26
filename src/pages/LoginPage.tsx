@@ -1,9 +1,9 @@
 import React from 'react';
 import LoginTemplate from '../components/auth/LoginTemplate';
 import LoginFormContainer from '../containers/auth/LoginFormContainer';
-import { BrowserRouterProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
-interface LoginPageProps extends BrowserRouterProps {}
+interface LoginPageProps extends RouteComponentProps {}
 const LoginPage: React.FC<LoginPageProps> = () => {
   return (
     <LoginTemplate>

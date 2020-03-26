@@ -11,3 +11,6 @@ export const sendAuthSMS = (phone: string) =>
   apiClient.post<SendAuthPayloadResponse>('/api/v1.0/auth/sendsms', {
     phone,
   });
+
+export const certificationCode = (code: string) =>
+  apiClient.get(`/api/v1.0/auth/code/${code}`);

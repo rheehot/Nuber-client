@@ -63,19 +63,32 @@ const AuthPhoneSuccessBlock = styled.div`
 `;
 
 interface AuthPhoneSuccessProps {
-  registered: boolean;
+  disabled: boolean;
+  certification: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClick: (code: string) => Promise<void>;
 }
-const AuthPhoneSuccess: React.FC<AuthPhoneSuccessProps> = () => {
+const AuthPhoneSuccess: React.FC<AuthPhoneSuccessProps> = ({
+  disabled,
+  certification,
+  onChange,
+  onClick,
+}) => {
   return (
     <AuthPhoneSuccessBlock>
       <div className="Input_Wrapper">
         <input
           placeholder="인증코드를 입력하세요"
-          value=""
+          value={certification}
           tabIndex={2}
-          disabled={true}
+          onChange={onChange}
+          disabled={disabled}
         />
-        <button tabIndex={3} disabled={true}>
+        <button
+          tabIndex={3}
+          disabled={disabled}
+          onClick={() => onClick(certification)}
+        >
           인증하기
         </button>
       </div>

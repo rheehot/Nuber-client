@@ -4,7 +4,7 @@ import countries from '../../libs/countries';
 import palette from '../../libs/styles/palette';
 import { undrawSmallTown } from '../../static/images';
 
-const AuthPhoneFormBlock = styled.div`
+const AuthPhoneFormBlock = styled.form`
   flex-direction: column;
   .Select_Wrapper {
     padding-bottom: 1rem;
@@ -80,7 +80,9 @@ const AuthPhoneFormBlock = styled.div`
 
 interface AuthPhoneFormProps {
   phone: string;
+  select: string;
   disabled: boolean;
+  onChangeSelect: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (phone: string) => Promise<void>;
 }
@@ -88,7 +90,9 @@ const AuthPhoneForm: React.FC<AuthPhoneFormProps> = ({
   phone,
   disabled,
   onChange,
+  select,
   onSubmit,
+  onChangeSelect,
 }) => {
   return (
     <AuthPhoneFormBlock
@@ -98,7 +102,7 @@ const AuthPhoneForm: React.FC<AuthPhoneFormProps> = ({
       }}
     >
       <div className="Select_Wrapper">
-        <select>
+        <select value={select} onChange={onChangeSelect}>
           {countries.map((country, index) => (
             <option key={`${index}|${Date.now()}`} value={country.dial_code}>
               {country.flag} {country.name} ({country.dial_code})

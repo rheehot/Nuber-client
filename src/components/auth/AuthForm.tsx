@@ -6,7 +6,7 @@ import { ProviderType } from './AuthButton';
 import AuthEmailForm from './AuthEmailForm';
 import AuthPhoneForm from './AuthPhoneForm';
 import useInput from '../../libs/hooks/useInput';
-import AuthEmailSuccess from './AuthEmailSuccess';
+import AuthSuccess from './AuthSuccess';
 import AuthPhoneSuccess from './AuthPhoneSuccess';
 
 const AuthFormBlock = styled.div`
@@ -40,12 +40,15 @@ const AuthFormBlock = styled.div`
 
 interface AuthFormProps {
   provider: ProviderType;
-  email_registered: boolean;
-  sms_registered: boolean;
+  email_registered: boolean | null;
+  sms_registered: boolean | null;
+
   email_loading: boolean;
   sms_loading: boolean;
+
   onSendAuthEmail: (email: string) => Promise<void>;
   onSendAuthSMS: (phone: string) => Promise<void>;
+  onCertificationCode: (code: string) => Promise<void>;
 }
 const AuthForm: React.FC<AuthFormProps> = ({
   provider,
@@ -55,9 +58,20 @@ const AuthForm: React.FC<AuthFormProps> = ({
   email_loading,
   onSendAuthEmail,
   onSendAuthSMS,
+  onCertificationCode,
 }) => {
   const [email, onChangeEmail] = useInput('');
   const [phone, onChangePhone] = useInput('');
+  const [certification, onChangeCertification] = useInput('');
+
+  const [select, setSelect] = React.useState('+82');
+  const onChangeSelect = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelect(e.target.value);
+    },
+    [setSelect],
+  );
+
   return (
     <AuthFormBlock>
       <div className="Upper_Wrapper">
@@ -67,9 +81,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
             {provider === 'EMAIL' ? '이메일 서비스' : '문자 서비스'}로 로그인
           </h4>
           {provider === 'EMAIL' ? (
-            <>
-              {email_registered ? (
-                <AuthEmailSuccess registered={email_registered} />
+            <React.Fragment>
+              {email_registered !== null ? (
+                <AuthSuccess registered={email_registered} type="이메일" />
               ) : (
                 <AuthEmailForm
                   email={email}
@@ -78,20 +92,29 @@ const AuthForm: React.FC<AuthFormProps> = ({
                   disabled={email_loading}
                 />
               )}
-            </>
+            </React.Fragment>
           ) : (
-            <>
-              {sms_registered ? (
-                <AuthPhoneSuccess registered={sms_registered} />
+            <React.Fragment>
+              {sms_registered !== null ? (
+                <React.Fragment>
+                  <AuthPhoneSuccess
+                    disabled={false}
+                    certification={certification}
+                    onChange={onChangeCertification}
+                    onClick={onCertificationCode}
+                  />
+                </React.Fragment>
               ) : (
                 <AuthPhoneForm
                   phone={phone}
+                  select={select}
                   onChange={onChangePhone}
                   onSubmit={onSendAuthSMS}
                   disabled={sms_loading}
+                  onChangeSelect={onChangeSelect}
                 />
               )}
-            </>
+            </React.Fragment>
           )}
         </section>
       </div>

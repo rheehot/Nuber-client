@@ -9,6 +9,7 @@ import {
   sendAuthEmail,
   sendAuthSMS,
 } from '../../libs/apis/auth';
+import { useHistory } from 'react-router-dom';
 
 interface AuthModalContainerProps {
   modal: ModalState;
@@ -27,8 +28,10 @@ const AuthModalContainer: React.FC<AuthModalContainerProps> = ({
     SendAuthPayloadResponse
   >(sendAuthSMS);
 
-  const email_registered = email_data && email_data.registered;
-  const sms_registered = sms_data && sms_data.registered;
+  const email_registered = email_data ? email_data.registered : null;
+  const sms_registered = sms_data ? sms_data.registered : null;
+
+  const history = useHistory();
 
   const onSendAuthEmail = React.useCallback(
     async (email: string) => {
@@ -44,16 +47,24 @@ const AuthModalContainer: React.FC<AuthModalContainerProps> = ({
     [_sendAuthEmail],
   );
 
+  const onCertificationCode = React.useCallback(
+    async (code: string) => {
+      history.push(`http://localhost:3000/code?code=${code}`);
+    },
+    [history],
+  );
+
   return (
     <AuthModal visible={open} provider={provider} onModal={onModal}>
       <AuthForm
         provider={provider}
-        email_registered={email_registered!}
-        sms_registered={sms_registered!}
+        email_registered={email_registered}
+        sms_registered={sms_registered}
         email_loading={emal_loading}
         sms_loading={sms_loading}
         onSendAuthEmail={onSendAuthEmail}
         onSendAuthSMS={onSendAuthSMS}
+        onCertificationCode={onCertificationCode}
       />
     </AuthModal>
   );
