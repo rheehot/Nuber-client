@@ -13,7 +13,6 @@ const LogoBlock = styled.div<{ styles: string | undefined }>`
   margin: 0 auto;
   background-color: #000;
   color: #939393;
-  line-height: 2vw;
   font-size: 1.6vw;
   font-weight: 500;
   .Logo_Wrapper {
