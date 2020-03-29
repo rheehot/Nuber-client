@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { undrawSmallTown } from '../../static/images';
 import palette from '../../libs/styles/palette';
 
-const AuthPhoneSuccessBlock = styled.div`
+const AuthCertificationBlock = styled.div`
   .Input_Wrapper {
     width: 100%;
     display: flex;
@@ -49,33 +48,22 @@ const AuthPhoneSuccessBlock = styled.div`
       }
     }
   }
-
-  .Form_Backgroun_Wrapper {
-    position: absolute;
-    bottom: 0;
-    padding-right: 1.5rem;
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-  }
 `;
 
-interface AuthPhoneSuccessProps {
+interface AuthCertificationProps {
   disabled: boolean;
   certification: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: (code: string) => Promise<void>;
+  onClick: (code: string) => void;
 }
-const AuthPhoneSuccess: React.FC<AuthPhoneSuccessProps> = ({
+const AuthCertification: React.FC<AuthCertificationProps> = ({
   disabled,
   certification,
   onChange,
   onClick,
 }) => {
   return (
-    <AuthPhoneSuccessBlock>
+    <AuthCertificationBlock>
       <div className="Input_Wrapper">
         <input
           placeholder="인증코드를 입력하세요"
@@ -92,11 +80,8 @@ const AuthPhoneSuccess: React.FC<AuthPhoneSuccessProps> = ({
           인증하기
         </button>
       </div>
-      <div className="Form_Backgroun_Wrapper">
-        <img src={undrawSmallTown} alt="auth_form" />
-      </div>
-    </AuthPhoneSuccessBlock>
+    </AuthCertificationBlock>
   );
 };
 
-export default AuthPhoneSuccess;
+export default AuthCertification;

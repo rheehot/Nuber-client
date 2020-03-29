@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import countries from '../../libs/countries';
 import palette from '../../libs/styles/palette';
-import { undrawSmallTown } from '../../static/images';
 
 const AuthPhoneFormBlock = styled.form`
   flex-direction: column;
@@ -65,17 +64,6 @@ const AuthPhoneFormBlock = styled.form`
       }
     }
   }
-
-  .Form_Backgroun_Wrapper {
-    position: absolute;
-    bottom: 0;
-    padding-right: 1.5rem;
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-  }
 `;
 
 interface AuthPhoneFormProps {
@@ -121,9 +109,6 @@ const AuthPhoneForm: React.FC<AuthPhoneFormProps> = ({
         <button tabIndex={3} disabled={disabled}>
           로그인
         </button>
-      </div>
-      <div className="Form_Backgroun_Wrapper">
-        <img src={undrawSmallTown} alt="auth_form" />
       </div>
     </AuthPhoneFormBlock>
   );

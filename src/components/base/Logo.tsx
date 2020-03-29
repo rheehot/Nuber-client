@@ -1,8 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { uberlogo } from '../../static/images';
 
-const LogoBlock = styled.div`
+const LogoBlock = styled.div<{ styles: string | undefined }>`
+  ${props =>
+    props.styles &&
+    css`
+      ${props.styles}
+    `}
   height: 94px;
   width: 94px;
   margin: 0 auto;
@@ -27,9 +32,12 @@ const LogoBlock = styled.div`
     }
   }
 `;
-const Logo = () => {
+interface LogoProps {
+  styles?: string;
+}
+const Logo: React.FC<LogoProps> = ({ styles }) => {
   return (
-    <LogoBlock className="Logo">
+    <LogoBlock className="Logo" styles={styles}>
       <div className="Logo_Wrapper">
         <div className="Content">
           <img className="Logo_Image" src={uberlogo} alt="uber logo" />

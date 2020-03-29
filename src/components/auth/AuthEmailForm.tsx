@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import palette from '../../libs/styles/palette';
-import { undrawSmallTown } from '../../static/images';
 
 const AuthEmailFormBlock = styled.form`
   width: 100%;
@@ -46,17 +45,6 @@ const AuthEmailFormBlock = styled.form`
       cursor: default;
     }
   }
-
-  .Form_Backgroun_Wrapper {
-    position: absolute;
-    bottom: 0;
-    padding-right: 1.5rem;
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-  }
 `;
 
 interface AuthEmailFormProps {
@@ -88,9 +76,6 @@ const AuthEmailForm: React.FC<AuthEmailFormProps> = ({
       <button tabIndex={3} disabled={disabled}>
         로그인
       </button>
-      <div className="Form_Backgroun_Wrapper">
-        <img src={undrawSmallTown} alt="auth_form" />
-      </div>
     </AuthEmailFormBlock>
   );
 };

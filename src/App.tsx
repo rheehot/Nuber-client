@@ -10,6 +10,8 @@ import Core from './containers/base/Core';
 const HomePage = loadable(() => import('./pages/home/HomePage'));
 const LoginPage = loadable(() => import('./pages/LoginPage'));
 const CodeLoginPage = loadable(() => import('./pages/CodeLoginPage'));
+const EmailLoginPage = loadable(() => import('./pages/EmailLoginPage'));
+const SMSLoginPage = loadable(() => import('./pages/SMSLoginPage'));
 
 const LoggedInRoutes = () => (
   <Switch>
@@ -20,6 +22,8 @@ const LoggedInRoutes = () => (
 const LoggedOutRoutes = () => (
   <Switch>
     <Route path="/" component={LoginPage} exact />
+    <Route path="/email-login" component={EmailLoginPage} />
+    <Route path="/sms-login" component={SMSLoginPage} />
     <Route path="/code" component={CodeLoginPage} />
   </Switch>
 );

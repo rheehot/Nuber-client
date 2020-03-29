@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthModalContainer from './AuthModalContainer';
+import { useHistory } from 'react-router-dom';
 import LoginForm from '../../components/auth/LoginForm';
 import { ProviderType } from '../../components/auth/AuthButton';
 
@@ -10,28 +10,21 @@ export type ModalState = {
 
 interface LoginFormContainerProps {}
 const LoginFormContainer: React.FC<LoginFormContainerProps> = () => {
-  const [modal, setModal] = React.useState<ModalState>({
-    open: false,
-    provider: 'EMAIL',
-  });
+  const history = useHistory();
+  const onGoMove = React.useCallback((provider: ProviderType) => {
+    switch (provider) {
+      case 'EMAIL':
+        history.push('/email-login');
+        break;
+      case 'SMS':
+        history.push('/sms-login');
+        break;
+      default:
+        break;
+    }
+  }, []);
 
-  const onModal = React.useCallback(
-    (provider: ProviderType, visible: boolean) => {
-      console.log(provider);
-      setModal({
-        provider,
-        open: visible,
-      });
-    },
-    [setModal],
-  );
-
-  return (
-    <React.Fragment>
-      <LoginForm onModal={onModal} />
-      <AuthModalContainer modal={modal} onModal={onModal} />
-    </React.Fragment>
-  );
+  return <LoginForm onGoMove={onGoMove} />;
 };
 
 export default LoginFormContainer;
