@@ -12,6 +12,7 @@ const LoginPage = loadable(() => import('./pages/LoginPage'));
 const CodeLoginPage = loadable(() => import('./pages/CodeLoginPage'));
 const EmailLoginPage = loadable(() => import('./pages/EmailLoginPage'));
 const SMSLoginPage = loadable(() => import('./pages/SMSLoginPage'));
+const RegisterPage = loadable(() => import('./pages/RegisterPage'));
 
 const LoggedInRoutes = () => (
   <Switch>
@@ -25,6 +26,7 @@ const LoggedOutRoutes = () => (
     <Route path="/email-login" component={EmailLoginPage} />
     <Route path="/sms-login" component={SMSLoginPage} />
     <Route path="/code" component={CodeLoginPage} />
+    <Route path="/register" component={RegisterPage} />
   </Switch>
 );
 
