@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Logo from '../base/Logo';
 import { headerfannel } from '../../static/images';
 import media from '../../libs/styles/media';
+import { useHistory } from 'react-router-dom';
 
 const AuthTemplateBlock = styled.div`
   display: flex;
@@ -39,10 +40,15 @@ const AuthTemplateBlock = styled.div`
 `;
 interface AuthTemplateProps {}
 const AuthTemplate: React.FC<AuthTemplateProps> = ({ children }) => {
+  const history = useHistory();
+  const onClick = React.useCallback(() => {
+    history.push('/');
+  }, [history]);
+
   return (
     <AuthTemplateBlock className="AuthTemplate">
       <header className="auth-header">
-        <Logo styles={styles} />
+        <Logo styles={styles} onClick={onClick} />
       </header>
       <section className="auth-wrapper">{children}</section>
     </AuthTemplateBlock>

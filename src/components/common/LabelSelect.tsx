@@ -1,9 +1,10 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import palette from '../../libs/styles/palette';
 import media from '../../libs/styles/media';
 
 const LabelSelectBlock = styled.div<{ focus: boolean }>`
+  margin-top: 1.5rem;
   label,
   select {
     display: block;
@@ -15,11 +16,6 @@ const LabelSelectBlock = styled.div<{ focus: boolean }>`
     color: ${palette.gray9};
     margin-bottom: 1rem;
     transition: all 0.125s ease-in;
-    ${props =>
-      props.focus &&
-      css`
-        color: ${palette.gray8};
-      `}
   }
   select {
     font-size: 1.5rem;
@@ -32,11 +28,6 @@ const LabelSelectBlock = styled.div<{ focus: boolean }>`
     color: ${palette.gray7};
     background-color: #ffff;
     transition: all 0.125s ease-in;
-    ${props =>
-      props.focus &&
-      css`
-        color: ${palette.gray8};
-      `}
     &::placeholder {
       color: ${palette.gray5};
     }
@@ -53,11 +44,6 @@ const LabelSelectBlock = styled.div<{ focus: boolean }>`
     border-bottom: 1px solid ${palette.gray7};
     display: flex;
     align-items: center;
-    ${props =>
-      props.focus &&
-      css`
-        border-color: ${palette.gray8};
-      `}
     input {
       width: 1;
     }
@@ -79,15 +65,28 @@ type SelectProps = React.DetailedHTMLProps<
 
 interface LabelSelectProps extends SelectProps {
   lable: string;
+  placeholder?: string;
+  name?: string;
+  value?: string;
+  onChange?: React.ChangeEventHandler;
 }
-const LabelSelect: React.FC<LabelSelectProps> = ({ lable }) => {
+const LabelSelect: React.FC<LabelSelectProps> = ({
+  lable,
+  children,
+  name,
+  value,
+  placeholder,
+  onChange,
+  disabled,
+  ...rest
+}) => {
   return (
     <LabelSelectBlock focus>
       <label>{lable}</label>
       <div className="group">
         <div className="input-wrapper">
-          <select>
-            <option>+82</option>
+          <select value={value} name={name} onChange={onChange} {...rest}>
+            {children}
           </select>
         </div>
       </div>

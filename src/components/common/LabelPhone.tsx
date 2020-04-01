@@ -1,10 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MdLockOutline } from 'react-icons/md';
+import countries from '../../libs/countries';
 import palette from '../../libs/styles/palette';
 import media from '../../libs/styles/media';
 
-const LabelInputBlock = styled.div`
+const LabelPhoneBlock = styled.div`
+  select {
+    font-size: 20px;
+    color: '#2c3e50';
+    appearance: none;
+    background-color: white;
+    border: 0;
+    font-family: 'Maven Pro';
+    width: 100%;
+  }
+
   label,
   input {
     display: block;
@@ -17,6 +27,7 @@ const LabelInputBlock = styled.div`
     margin-bottom: 1rem;
     transition: all 0.125s ease-in;
   }
+
   input {
     font-size: 1.5rem;
     border: none;
@@ -34,6 +45,7 @@ const LabelInputBlock = styled.div`
       color: ${palette.gray6};
     }
   }
+
   .group {
     /* display: inline-block; */
     max-width: 100%;
@@ -46,18 +58,6 @@ const LabelInputBlock = styled.div`
     input {
       width: 1;
     }
-    svg {
-      font-size: 1.5rem;
-      color: ${palette.gray6};
-    }
-  }
-  .width-maker {
-    max-width: 100%;
-    display: inline-block;
-    visibility: hidden;
-    font-size: 1.5rem;
-    overflow: hidden;
-    line-height: 0;
   }
 `;
 
@@ -66,43 +66,56 @@ type InputProps = React.DetailedHTMLProps<
   HTMLInputElement
 >;
 
-export interface LabelInputProps extends InputProps {
+interface LabelPhoneProps {
   label: string;
-  placeholder?: string;
-  name?: string;
-  value?: string;
-  onChange?: React.ChangeEventHandler;
+  phone: string;
+  phone_name: string;
+  country_code: string;
+  country_name: string;
+  onChangePhone: any;
+  onChangeCountry: any;
+  placeholder: string;
+  disabled: boolean;
 }
-
-const LabelInput: React.FC<LabelInputProps> = ({
+const LabelPhone: React.FC<LabelPhoneProps> = ({
   label,
-  name,
-  value,
+  phone_name,
+  country_name,
+  country_code,
+  phone,
   placeholder,
-  onChange,
+  onChangePhone,
+  onChangeCountry,
   disabled,
-  ...rest
 }) => {
   return (
-    <LabelInputBlock>
+    <LabelPhoneBlock>
       <label>{label}</label>
       <div className="group">
+        <select
+          value={country_code}
+          name={country_name}
+          onChange={onChangeCountry}
+        >
+          {countries.map((country, index) => (
+            <option key={`${index}|${Date.now()}`} value={country.dial_code}>
+              {country.flag} {country.name} ({country.dial_code})
+            </option>
+          ))}
+        </select>
         <div className="input-wrapper">
           <input
-            name={name}
-            onChange={onChange}
-            value={value}
+            type="tel"
+            onChange={onChangePhone}
+            value={phone}
+            name={phone_name}
             placeholder={placeholder}
             disabled={disabled}
-            {...rest}
           />
-          {disabled && <MdLockOutline />}
         </div>
-
-        <div className="width-maker">{value || `${placeholder}`}</div>
       </div>
-    </LabelInputBlock>
+    </LabelPhoneBlock>
   );
 };
 
-export default LabelInput;
+export default LabelPhone;

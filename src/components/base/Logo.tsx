@@ -19,6 +19,7 @@ const LogoBlock = styled.div<{ styles: string | undefined }>`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     .Content {
       padding: 12.5%;
       img {
@@ -32,13 +33,14 @@ const LogoBlock = styled.div<{ styles: string | undefined }>`
   }
 `;
 interface LogoProps {
+  onClick?: () => void;
   styles?: string;
 }
-const Logo: React.FC<LogoProps> = ({ styles }) => {
+const Logo: React.FC<LogoProps> = ({ styles, onClick }) => {
   return (
     <LogoBlock className="Logo" styles={styles}>
       <div className="Logo_Wrapper">
-        <div className="Content">
+        <div className="Content" onClick={onClick}>
           <img className="Logo_Image" src={uberlogo} alt="uber logo" />
         </div>
       </div>
