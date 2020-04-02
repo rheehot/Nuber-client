@@ -101,10 +101,39 @@ const RegisterFormBlock = styled.div`
       }
     }
   }
+
+  .error {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    color: ${palette.red5};
+    font-weight: bold;
+  }
 `;
 
-interface RegisterFormProps {}
-const RegisterForm: React.FC<RegisterFormProps> = () => {
+export interface RegisterFormType {
+  email: string;
+  phone: string;
+  country_code: string;
+  birth: string;
+  first_name: string;
+  last_name: string;
+  gender: 'MALE' | 'FEMALE' | 'UNKNOWN';
+}
+
+interface RegisterFormProps {
+  error: string | null;
+  fixedEmail: string | null | undefined;
+  fixedPhone: string | null | undefined;
+  onSubmit: (form: RegisterFormType) => Promise<void>;
+}
+const RegisterForm: React.FC<RegisterFormProps> = ({
+  error,
+  fixedEmail,
+  fixedPhone,
+  onSubmit,
+}) => {
   const [state, onChange] = useForm();
 
   const defaultBirth = format(new Date(), 'yyyy-MM-dd');
@@ -139,7 +168,8 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
         <LabelInput
           label="이메일"
           name="email"
-          value={state.email}
+          value={fixedEmail || state.email}
+          disabled={!!fixedEmail}
           placeholder="이메일을 입력하세요."
           onChange={e => onChange(e, 'SetFormDataAction')}
         />
@@ -148,11 +178,11 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
           country_name="country_code"
           phone_name="phone"
           country_code={state.country_code}
-          phone={state.phone}
+          phone={fixedPhone || state.phone}
           onChangeCountry={(e: any) => onChange(e, 'SetFormDataAction')}
           onChangePhone={(e: any) => onChange(e, 'SetFormDataAction')}
           placeholder="전화번호를 입력하세요."
-          disabled={false}
+          disabled={!!fixedPhone}
         />
         <LabelDatePicker
           label="생일"
@@ -170,7 +200,21 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
           <option value="UNKNOWN">알수없음</option>
         </LabelSelect>
       </div>
-      <button className="register-btn">
+      {error && <div className="error">{error}</div>}
+      <button
+        className="register-btn"
+        onClick={() =>
+          onSubmit({
+            first_name: state.first_name,
+            last_name: state.last_name,
+            email: state.email,
+            phone: state.phone,
+            country_code: state.country_code,
+            birth,
+            gender: state.gender,
+          })
+        }
+      >
         <span className="text">가입하기</span>
         <ArrowIcon />
       </button>

@@ -64,7 +64,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onGoMove }) => {
         <section>
           <h4>SNS</h4>
           <AuthButton provider="KAKAO" />
-          <AuthButton provider="FACEBOOK" />
         </section>
       </div>
     </LoginFormBlock>

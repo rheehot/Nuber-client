@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { MdLockOutline } from 'react-icons/md';
 import countries from '../../libs/countries';
 import palette from '../../libs/styles/palette';
 import media from '../../libs/styles/media';
@@ -61,11 +62,6 @@ const LabelPhoneBlock = styled.div`
   }
 `;
 
-type InputProps = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
->;
-
 interface LabelPhoneProps {
   label: string;
   phone: string;
@@ -77,6 +73,7 @@ interface LabelPhoneProps {
   placeholder: string;
   disabled: boolean;
 }
+
 const LabelPhone: React.FC<LabelPhoneProps> = ({
   label,
   phone_name,
@@ -95,6 +92,7 @@ const LabelPhone: React.FC<LabelPhoneProps> = ({
         <select
           value={country_code}
           name={country_name}
+          disabled={disabled}
           onChange={onChangeCountry}
         >
           {countries.map((country, index) => (
@@ -112,6 +110,7 @@ const LabelPhone: React.FC<LabelPhoneProps> = ({
             placeholder={placeholder}
             disabled={disabled}
           />
+          {disabled && <MdLockOutline />}
         </div>
       </div>
     </LabelPhoneBlock>

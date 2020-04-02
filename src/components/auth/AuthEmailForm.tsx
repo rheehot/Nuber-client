@@ -1,6 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import palette from '../../libs/styles/palette';
+
+const AuthEmailFormWrapper = styled.div`
+  .signup-link {
+    display: block;
+    font-size: 0.85714rem;
+    margin-bottom: 24px;
+    margin-top: 24px;
+    & > p {
+      display: inline;
+      letter-spacing: 0.005em;
+      a {
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+        color: ${palette.teal7};
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+  }
+`;
 
 const AuthEmailFormBlock = styled.form`
   width: 100%;
@@ -60,23 +81,31 @@ const AuthEmailForm: React.FC<AuthEmailFormProps> = ({
   onSubmit,
 }) => {
   return (
-    <AuthEmailFormBlock
-      onSubmit={e => {
-        e.preventDefault();
-        onSubmit(email);
-      }}
-    >
-      <input
-        value={email}
-        tabIndex={2}
-        placeholder="이메일을 입력하세요."
-        disabled={disabled}
-        onChange={onChange}
-      />
-      <button tabIndex={3} disabled={disabled}>
-        로그인
-      </button>
-    </AuthEmailFormBlock>
+    <AuthEmailFormWrapper>
+      <AuthEmailFormBlock
+        onSubmit={e => {
+          e.preventDefault();
+          onSubmit(email);
+        }}
+      >
+        <input
+          value={email}
+          tabIndex={2}
+          placeholder="이메일을 입력하세요."
+          disabled={disabled}
+          onChange={onChange}
+        />
+        <button tabIndex={3} disabled={disabled}>
+          인증하기
+        </button>
+      </AuthEmailFormBlock>
+      <div className="signup-link">
+        <p>
+          SMS로 로그인하시겠습니까?
+          <Link to="/sms">SMS로 로그인</Link>
+        </p>
+      </div>
+    </AuthEmailFormWrapper>
   );
 };
 

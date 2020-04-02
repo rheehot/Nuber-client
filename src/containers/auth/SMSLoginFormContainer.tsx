@@ -12,51 +12,51 @@ const SMSLoginFormContainer: React.FC<SMSLoginFormContainerProps> = () => {
   const history = useHistory();
 
   const [sms, onChangeSMS] = useInput('');
-  const [select, setSelect] = React.useState('+82');
+  const [country_code, setCountryCode] = React.useState('+82');
   const [_sendAuthSMS, loading, data] = useRequest<SendAuthPayloadResponse>(
     sendAuthSMS,
   );
 
   const registered = data ? data.registered : null;
-
   const onChangeSelect = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelect(e.target.value);
+      setCountryCode(e.target.value);
     },
-    [setSelect],
+    [setCountryCode],
   );
+
   const onSendAuthSMS = React.useCallback(
-    async (sms: string) => {
-      _sendAuthSMS(sms);
+    async (sms: string, country_code: string) => {
+      _sendAuthSMS(sms, country_code);
     },
     [_sendAuthSMS],
   );
 
-  const [certification, onChangeCertification] = useInput('');
+  const [code, onCodeChange] = useInput('');
   const [cert_loading, setLoading] = React.useState(false);
   const onCertification = React.useCallback(() => {
     setLoading(true);
-    if (!certification) {
+    if (!code) {
       setLoading(false);
       return;
     }
 
-    history.push(`/code/${certification}`);
+    history.push(`/register?code=${code}&type=phone`);
     setLoading(false);
-  }, [certification]);
+  }, [code]);
 
   return (
     <AuthFormWrapper provider="SMS">
-      {registered != null ? (
+      {registered !== null ? (
         <AuthCertification
           disabled={cert_loading}
-          certification={certification}
-          onChange={onChangeCertification}
+          certification={code}
+          onChange={onCodeChange}
           onClick={onCertification}
         />
       ) : (
         <AuthPhoneForm
-          select={select}
+          country_code={country_code}
           phone={sms}
           onChange={onChangeSMS}
           onChangeSelect={onChangeSelect}

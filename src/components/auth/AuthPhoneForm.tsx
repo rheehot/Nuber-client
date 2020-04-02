@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
 import countries from '../../libs/countries';
 import palette from '../../libs/styles/palette';
 
@@ -64,21 +66,39 @@ const AuthPhoneFormBlock = styled.form`
       }
     }
   }
+
+  .signup-link {
+    display: block;
+    font-size: 0.85714rem;
+    margin-bottom: 24px;
+    margin-top: 24px;
+    & > p {
+      display: inline;
+      letter-spacing: 0.005em;
+      a {
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+        color: ${palette.teal7};
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+  }
 `;
 
 interface AuthPhoneFormProps {
   phone: string;
-  select: string;
+  country_code: string;
   disabled: boolean;
   onChangeSelect: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (phone: string) => Promise<void>;
+  onSubmit: (phone: string, country_code: string) => Promise<void>;
 }
 const AuthPhoneForm: React.FC<AuthPhoneFormProps> = ({
   phone,
   disabled,
   onChange,
-  select,
+  country_code,
   onSubmit,
   onChangeSelect,
 }) => {
@@ -86,11 +106,11 @@ const AuthPhoneForm: React.FC<AuthPhoneFormProps> = ({
     <AuthPhoneFormBlock
       onSubmit={e => {
         e.preventDefault();
-        onSubmit(phone);
+        onSubmit(phone, country_code);
       }}
     >
       <div className="Select_Wrapper">
-        <select value={select} onChange={onChangeSelect}>
+        <select value={country_code} onChange={onChangeSelect}>
           {countries.map((country, index) => (
             <option key={`${index}|${Date.now()}`} value={country.dial_code}>
               {country.flag} {country.name} ({country.dial_code})
@@ -107,8 +127,14 @@ const AuthPhoneForm: React.FC<AuthPhoneFormProps> = ({
           onChange={onChange}
         />
         <button tabIndex={3} disabled={disabled}>
-          로그인
+          인증하기
         </button>
+      </div>
+      <div className="signup-link">
+        <p>
+          이메일로 로그인하시겠습니까?
+          <Link to="/email">이메일로 로그인</Link>
+        </p>
       </div>
     </AuthPhoneFormBlock>
   );

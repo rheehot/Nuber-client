@@ -14,10 +14,10 @@ const LoginFormContainer: React.FC<LoginFormContainerProps> = () => {
   const onGoMove = React.useCallback((provider: ProviderType) => {
     switch (provider) {
       case 'EMAIL':
-        history.push('/email-login');
+        history.push('/email');
         break;
       case 'SMS':
-        history.push('/sms-login');
+        history.push('/sms');
         break;
       default:
         break;

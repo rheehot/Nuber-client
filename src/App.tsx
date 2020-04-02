@@ -23,9 +23,9 @@ const LoggedInRoutes = () => (
 const LoggedOutRoutes = () => (
   <Switch>
     <Route path="/" component={LoginPage} exact />
-    <Route path="/email-login" component={EmailLoginPage} />
-    <Route path="/sms-login" component={SMSLoginPage} />
-    <Route path="/code" component={CodeLoginPage} />
+    <Route path="/email" component={EmailLoginPage} />
+    <Route path="/sms" component={SMSLoginPage} />
+    <Route path="/code-login" component={CodeLoginPage} />
     <Route path="/register" component={RegisterPage} />
   </Switch>
 );
