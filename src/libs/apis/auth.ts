@@ -56,3 +56,53 @@ export const getRegisterToken = (code: string, type: string) => {
 
 export const emailLoginCode = (code: string) =>
   apiClient.get<AuthResponse>(`/api/v1.0/auth/mail-code/${code}`);
+
+export const localRegister = ({
+  type,
+  registerToken,
+  form,
+}: {
+  type: 'email' | 'phone';
+  registerToken: string | null;
+  form: {
+    email: string;
+    phone: string;
+    country_code: string;
+    birth: string;
+    first_name: string;
+    last_name: string;
+    gender: 'MALE' | 'FEMALE' | 'UNKNOWN';
+  };
+}) =>
+  apiClient.post<AuthResponse>(`/api/v1.0/auth/register/${type}/local`, {
+    register_token: registerToken,
+    form,
+  });
+
+export const socialRegister = (form: {
+  email: string;
+  phone: string;
+  country_code: string;
+  birth: string;
+  first_name: string;
+  last_name: string;
+  gender: 'MALE' | 'FEMALE' | 'UNKNOWN';
+}) =>
+  apiClient.post<AuthResponse>('/api/v1.0/auth/social/register', {
+    form,
+  });
+
+export interface SocialProfile {
+  uid: number;
+  email: string;
+  name: string;
+  thumbnail: string;
+  username: string;
+}
+
+export const getSocialProfile = async () => {
+  const response = await apiClient.get<SocialProfile>(
+    '/api/v1.0/auth/social/profile',
+  );
+  return response.data;
+};

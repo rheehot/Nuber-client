@@ -24,7 +24,12 @@ const LoginFormContainer: React.FC<LoginFormContainerProps> = () => {
     }
   }, []);
 
-  return <LoginForm onGoMove={onGoMove} />;
+  const onSocialLogin = React.useCallback(() => {
+    const redirectTo = `http://localhost:4000/api/v1.0/auth/social/redirect/kakao`;
+    window.location.replace(redirectTo);
+  }, []);
+
+  return <LoginForm onGoMove={onGoMove} onSocialLogin={onSocialLogin} />;
 };
 
 export default LoginFormContainer;

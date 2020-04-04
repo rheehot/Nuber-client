@@ -45,8 +45,9 @@ const LoginFormBlock = styled.div`
 
 interface LoginFormProps {
   onGoMove: (provider: ProviderType) => void;
+  onSocialLogin: () => void;
 }
-const LoginForm: React.FC<LoginFormProps> = ({ onGoMove }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onGoMove, onSocialLogin }) => {
   return (
     <LoginFormBlock className="LoginForm">
       <div className="Upper_Wrapper">
@@ -63,7 +64,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onGoMove }) => {
         </section>
         <section>
           <h4>SNS</h4>
-          <AuthButton provider="KAKAO" />
+          <AuthButton provider="KAKAO" onSocialClick={onSocialLogin} />
         </section>
       </div>
     </LoginFormBlock>

@@ -134,7 +134,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   fixedPhone,
   onSubmit,
 }) => {
-  const [state, onChange] = useForm();
+  const [state, onChange, onReset] = useForm();
 
   const defaultBirth = format(new Date(), 'yyyy-MM-dd');
   const [birth, setBirth] = React.useState(defaultBirth);
@@ -145,6 +145,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     },
     [],
   );
+
+  React.useEffect(() => {
+    onReset();
+  }, []);
 
   return (
     <RegisterFormBlock className="RegisterForm">
@@ -207,8 +211,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           onSubmit({
             first_name: state.first_name,
             last_name: state.last_name,
-            email: state.email,
-            phone: state.phone,
+            email: state.email || fixedEmail!,
+            phone: state.phone || fixedPhone!,
             country_code: state.country_code,
             birth,
             gender: state.gender,

@@ -3,9 +3,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 
 const host =
-  (process.env.NODE_ENV === 'development'
-    ? '/'
-    : process.env.REACT_APP_API_HOST) || '/';
+  process.env.NODE_ENV === 'development' ? 'http://localhost:4000/' : '/';
 
 const graphqlURI = host.concat('graphql');
 const link = createHttpLink({

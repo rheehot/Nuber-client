@@ -2,25 +2,33 @@ import gql from 'graphql-tag';
 
 export type CurrentUser = {
   id: string;
-  username: string;
+  email: string;
+  phone: string;
+  country_code: string;
   profile: {
     id: string;
     thumbnail: string | null;
-    display_name: string;
+    birth: string;
+    first_name: string;
+    last_name: string;
+    gender: 'MALE' | 'FEMALE' | 'UNKNOWN';
   };
-  email: string;
 };
 
 export const GET_CURRENT_USER = gql`
   query CurrentUser {
     auth {
       id
-      username
+      phone
       email
+      country_code
       profile {
         id
         thumbnail
-        display_name
+        first_name
+        last_name
+        birth
+        gender
       }
     }
   }

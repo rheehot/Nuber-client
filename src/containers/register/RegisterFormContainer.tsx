@@ -1,18 +1,26 @@
 import React from 'react';
 import qs from 'qs';
+import useRequest from '../../libs/hooks/useRequest';
+
 import { Location, History } from 'history';
 import { useApolloClient } from '@apollo/react-hooks';
-import useRequest from '../../libs/hooks/useRequest';
+
 import {
   getRegisterToken,
   GetRegisterTokenResponse,
+  localRegister,
+  socialRegister,
+  getSocialProfile,
+  SocialProfile,
 } from '../../libs/apis/auth';
+
 import RegisterForm, {
   RegisterFormType,
 } from '../../components/register/RegisterForm';
+
 import { GET_CURRENT_USER } from '../../libs/graphql/user';
 
-type Query = { code?: string; social?: string; type?: string };
+type Query = { code?: string; social?: string; type?: 'email' | 'phone' };
 
 interface RegisterFormContainerProps {
   location: Location;
@@ -26,10 +34,19 @@ const RegisterFormContainer: React.FC<RegisterFormContainerProps> = ({
   const client = useApolloClient();
 
   const [error, setError] = React.useState<string | null>(null);
+  const [
+    socialProfile,
+    setSocialProfile,
+  ] = React.useState<SocialProfile | null>(null);
 
   const [onGetRegisterToken, _, registerToken] = useRequest<
     GetRegisterTokenResponse
   >(getRegisterToken);
+
+  const onGetSocialProfile = async () => {
+    const profile = await getSocialProfile();
+    setSocialProfile(profile);
+  };
 
   React.useEffect(() => {
     if (!query.code) return;
@@ -39,6 +56,7 @@ const RegisterFormContainer: React.FC<RegisterFormContainerProps> = ({
 
   React.useEffect(() => {
     if (!query.social) return;
+    onGetSocialProfile();
   }, [query.social]);
 
   const onSubmit = async (form: RegisterFormType) => {
@@ -92,7 +110,13 @@ const RegisterFormContainer: React.FC<RegisterFormContainerProps> = ({
 
     try {
       if (query.code) {
+        await localRegister({
+          type: query.type!,
+          registerToken: registerToken && registerToken.register_token,
+          form,
+        });
       } else if (query.social) {
+        await socialRegister(form);
       }
     } catch (e) {
       if (e.response.status === 409) {
@@ -108,12 +132,15 @@ const RegisterFormContainer: React.FC<RegisterFormContainerProps> = ({
         query: GET_CURRENT_USER,
         fetchPolicy: 'network-only',
       });
+
       history.replace('/');
     } catch (e) {
       setError('에러 발생!');
       return;
     }
   };
+
+  if (query.social && !socialProfile) return null;
 
   return (
     <RegisterForm

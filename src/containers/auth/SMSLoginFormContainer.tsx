@@ -17,7 +17,7 @@ const SMSLoginFormContainer: React.FC<SMSLoginFormContainerProps> = () => {
     sendAuthSMS,
   );
 
-  const registered = data ? data.registered : null;
+  const registered = data && data.registered;
   const onChangeSelect = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setCountryCode(e.target.value);
@@ -41,9 +41,13 @@ const SMSLoginFormContainer: React.FC<SMSLoginFormContainerProps> = () => {
       return;
     }
 
-    history.push(`/register?code=${code}&type=phone`);
+    if (registered) {
+      history.push(`/code-login?code=${code}&type=phone`);
+    } else {
+      history.push(`/register?code=${code}&type=phone`);
+    }
     setLoading(false);
-  }, [code]);
+  }, [code, registered]);
 
   return (
     <AuthFormWrapper provider="SMS">

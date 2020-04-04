@@ -13,7 +13,7 @@ const EmailLoginFormContainer: React.FC<EmailLoginFormContainerProps> = () => {
     sendAuthEmail,
   );
 
-  const registered = data ? data.registered : null;
+  const registered = data && data.registered;
   const onSendAuthEmail = React.useCallback(
     async (email: string) => {
       _sendAuthEmail(email);
