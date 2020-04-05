@@ -2,6 +2,7 @@ import React from 'react';
 import qs from 'qs';
 import useRequest from '../../libs/hooks/useRequest';
 
+import { useDispatch } from 'react-redux';
 import { Location, History } from 'history';
 import { useApolloClient } from '@apollo/react-hooks';
 
@@ -19,6 +20,7 @@ import RegisterForm, {
 } from '../../components/register/RegisterForm';
 
 import { GET_CURRENT_USER } from '../../libs/graphql/user';
+import { actions } from '../../modules/core';
 
 type Query = { code?: string; social?: string; type?: 'email' | 'phone' };
 
@@ -32,6 +34,7 @@ const RegisterFormContainer: React.FC<RegisterFormContainerProps> = ({
 }) => {
   const query = qs.parse(location.search, { ignoreQueryPrefix: true }) as Query;
   const client = useApolloClient();
+  const dispatch = useDispatch();
 
   const [error, setError] = React.useState<string | null>(null);
   const [
@@ -78,7 +81,7 @@ const RegisterFormContainer: React.FC<RegisterFormContainerProps> = ({
         }
       },
       phone: (text: string) => {
-        if (text.length > 140) {
+        if (text === '') {
           return '전화번호를 입력하세요.';
         }
       },
@@ -133,9 +136,11 @@ const RegisterFormContainer: React.FC<RegisterFormContainerProps> = ({
         fetchPolicy: 'network-only',
       });
 
+      dispatch(actions.setLoggedStatus(true));
       history.replace('/');
     } catch (e) {
       setError('에러 발생!');
+      dispatch(actions.setLoggedStatus(false));
       return;
     }
   };
