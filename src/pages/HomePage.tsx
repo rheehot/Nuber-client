@@ -1,13 +1,12 @@
 import React from 'react';
-import HomeTemplate from '../../components/home/HomeTemplate';
-import MapContainer from '../../containers/home/MapContainer';
+import HomeTemplate from '../components/home/HomeTemplate';
+import Header from '../components/base/Header';
 
 interface HomePageProps {}
 const HomePage: React.FC<HomePageProps> = () => {
   return (
     <HomeTemplate>
-      Home
-      <MapContainer />
+      <Header />
     </HomeTemplate>
   );
 };

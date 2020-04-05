@@ -1,20 +1,26 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+import palette from '../../libs/styles/palette';
 
-const HomeTemplateBlock = styled.div`
-  .HomeTemplate {
-  }
-
-  .Sidebar_Overlay {
-    z-index: 2 !important;
+const BackgroundStyle = createGlobalStyle`
+  body {
+    background: ${palette.gray0};
   }
 `;
 
-interface HomeTemplateProps {}
+export type HomeTemplateProps = {
+  children: React.ReactNode;
+};
+
 const HomeTemplate: React.FC<HomeTemplateProps> = ({ children }) => {
   return (
-    <HomeTemplateBlock className="HomeTemplate">{children}</HomeTemplateBlock>
+    <>
+      <BackgroundStyle />
+      <Block>{children}</Block>
+    </>
   );
 };
+
+const Block = styled.div``;
 
 export default HomeTemplate;

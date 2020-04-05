@@ -7,7 +7,7 @@ import { RootState } from './modules';
 
 import Core from './containers/base/Core';
 
-const HomePage = loadable(() => import('./pages/home/HomePage'));
+const HomePage = loadable(() => import('./pages/HomePage'));
 const LoginPage = loadable(() => import('./pages/LoginPage'));
 const CodeLoginPage = loadable(() => import('./pages/CodeLoginPage'));
 const EmailLoginPage = loadable(() => import('./pages/EmailLoginPage'));

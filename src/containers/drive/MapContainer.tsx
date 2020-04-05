@@ -1,9 +1,9 @@
 import React from 'react';
 import SideBar from 'react-sidebar';
-import Map from '../../components/home/Map';
-import MenuButton from '../../components/home/MenuButton';
+import Map from '../../components/drive/Map';
+import MenuButton from '../../components/drive/MenuButton';
 import SidebarContainer from './SidebarContainer';
-import useLoadMap from '../../containers/home/hooks/useLoadMap';
+import useLoadMap from './hooks/useLoadMap';
 
 const SidebarStyled = {
   sidebar: {

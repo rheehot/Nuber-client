@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from '../../components/home/Sidebar';
+import Sidebar from '../../components/drive/Sidebar';
 
 interface SidebarContainerProps {}
 const SidebarContainer: React.FC<SidebarContainerProps> = () => {
