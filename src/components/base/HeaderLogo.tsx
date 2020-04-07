@@ -14,11 +14,11 @@ const HeaderLogoBlock = styled.div`
   font-size: 1.3125rem;
   text-decoration: none;
   font-family: Fira Mono, monospace;
+  .uber-logo {
+    height: 1.25rem;
+  }
   ${media.medium} {
     font-size: 1.125rem;
-    .uber-logo {
-      height: 1.25rem;
-    }
   }
   a {
     display: flex;

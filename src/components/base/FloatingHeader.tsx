@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
-import { getScrollTop, getScrollBottom } from '../../libs/utils';
+import { toFit } from '../../libs/event-manager';
+import { getScrollTop } from '../../libs/utils';
 
 const FloatingHeaderBlock = styled.div`
   position: fixed;
@@ -19,19 +20,52 @@ interface FloatingHeaderProps {}
 const FloatingHeader: React.FC<FloatingHeaderProps> = () => {
   const [visible, setVisible] = React.useState(false);
   const blockRef = React.useRef<HTMLDivElement>(null);
-  const [] = React.useState();
+  const [height, setHeight] = React.useState(0);
+  const [marginTop, setMarginTop] = React.useState(0);
+
+  const prevScrollTop = React.useRef(0);
+  const direction = React.useRef<'UP' | 'DOWN'>('DOWN');
+  const transitionPoint = React.useRef(0);
 
   React.useEffect(() => {
     if (!blockRef.current) return;
+    setHeight(blockRef.current.clientHeight);
+    setMarginTop(-1 * blockRef.current.clientHeight);
   }, []);
 
   const onScroll = React.useCallback(() => {
-    console.log(document.documentElement.offsetHeight);
-    const currentPos = getScrollTop() + window.innerHeight;
-    const isTriggerPos = () =>
-      document.documentElement.offsetHeight - currentPos;
+    const scrollTop = getScrollTop();
+    const nextDirection = prevScrollTop.current > scrollTop ? 'UP' : 'DOWN';
 
-    console.log(isTriggerPos());
+    if (
+      direction.current === 'DOWN' &&
+      nextDirection === 'UP' &&
+      transitionPoint.current - scrollTop < 0
+    ) {
+      setVisible(true);
+      transitionPoint.current = scrollTop;
+    }
+
+    if (
+      direction.current === 'UP' &&
+      nextDirection === 'DOWN' &&
+      scrollTop - transitionPoint.current < -1 * height
+    ) {
+      setVisible(true);
+      transitionPoint.current = scrollTop + height;
+    }
+
+    if (scrollTop < 64) {
+      setVisible(true);
+    }
+
+    direction.current = nextDirection;
+    prevScrollTop.current = scrollTop;
+
+    return toFit(
+      () => setMarginTop(Math.min(0, scrollTop - transitionPoint.current)),
+      {},
+    )();
   }, []);
 
   React.useEffect(() => {
@@ -44,7 +78,20 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = () => {
   if (!visible) return null;
 
   return (
-    <FloatingHeaderBlock ref={blockRef}>
+    <FloatingHeaderBlock
+      ref={blockRef}
+      style={
+        visible
+          ? {
+              marginTop: marginTop,
+              display: 'block',
+            }
+          : {
+              marginTop: -1 * height,
+              opacity: 0,
+            }
+      }
+    >
       <Header />
     </FloatingHeaderBlock>
   );
