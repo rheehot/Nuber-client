@@ -1,18 +1,18 @@
 import React from 'react';
 import HomeTemplate from '../components/home/HomeTemplate';
 import Header from '../components/base/Header';
-import FloatingHeader from '../components/base/FloatingHeader';
-import MainResponsive from '../components/common/MainResponsive';
+import HomeLayout from '../components/home/HomeLayout';
+import HomeTab from '../components/home/HomeTab';
 
 interface HomePageProps {}
 const HomePage: React.FC<HomePageProps> = () => {
   return (
     <HomeTemplate>
       <Header />
-      <FloatingHeader />
-      <MainResponsive>
-        <div style={{ height: 1500 }}>???</div>
-      </MainResponsive>
+      <HomeLayout>
+        <HomeTab />
+        <div style={{ height: '1000px', backgroundColor: 'black' }}></div>
+      </HomeLayout>
     </HomeTemplate>
   );
 };

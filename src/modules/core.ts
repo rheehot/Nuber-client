@@ -20,8 +20,8 @@ interface CoreState {
 }
 
 const initialState: CoreState = {
-  // isLogged: false,
-  isLogged: true,
+  isLogged: false,
+  // isLogged: true,
   user: null,
 };
 

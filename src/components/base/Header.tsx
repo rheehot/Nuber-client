@@ -1,16 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import MainResponsive from '../common/MainResponsive';
 import media from '../../libs/styles/media';
 import HeaderUserIcon from './HeaderUserIcon';
 import HeaderLogo from './HeaderLogo';
 
 const HeaderBlock = styled.div`
-  height: 3.75rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(59px);
+  padding: 10px;
+  z-index: 999;
+  background-color: rgb(255, 255, 255);
 `;
 
-const Inner = styled(MainResponsive)`
-  height: 100%;
+const Inner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

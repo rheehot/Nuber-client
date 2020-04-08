@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from './modules';
 
 import Core from './containers/base/Core';
+import BottomNavigation from './components/common/BottomNavigation';
 
 const HomePage = loadable(() => import('./pages/HomePage'));
 const LoginPage = loadable(() => import('./pages/LoginPage'));
@@ -15,9 +16,15 @@ const SMSLoginPage = loadable(() => import('./pages/SMSLoginPage'));
 const RegisterPage = loadable(() => import('./pages/RegisterPage'));
 
 const LoggedInRoutes = () => (
-  <Switch>
-    <Route path="/" component={HomePage} exact />
-  </Switch>
+  <React.Fragment>
+    <Switch>
+      <Route path="/" component={HomePage} exact />
+      <Route path="/nav" component={HomePage} />
+      <Route path="/bus" component={HomePage} />
+      <Route path="/raillway" component={HomePage} />
+    </Switch>
+    <BottomNavigation />
+  </React.Fragment>
 );
 
 const LoggedOutRoutes = () => (
