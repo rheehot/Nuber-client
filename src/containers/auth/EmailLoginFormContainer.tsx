@@ -13,7 +13,7 @@ const EmailLoginFormContainer: React.FC<EmailLoginFormContainerProps> = () => {
     sendAuthEmail,
   );
 
-  const registered = data && data.registered;
+  const registerd = data && data.registerd;
   const onSendAuthEmail = React.useCallback(
     async (email: string) => {
       _sendAuthEmail(email);
@@ -24,7 +24,7 @@ const EmailLoginFormContainer: React.FC<EmailLoginFormContainerProps> = () => {
   return (
     <AuthFormWrapper provider="EMAIL">
       <Form
-        registerd={registered}
+        registerd={registerd}
         loading={loading}
         email={email}
         onChange={onChangeInput}
@@ -51,7 +51,7 @@ const Form: React.FC<FormProps> = ({
   return (
     <React.Fragment>
       {registerd !== null ? (
-        <AuthSuccess registered={registerd} type="이메일" />
+        <AuthSuccess registerd={registerd} type="이메일" />
       ) : (
         <AuthEmailForm
           email={email}

@@ -23,11 +23,11 @@ const AuthSuccessBlock = styled.div`
 `;
 
 interface AuthSuccessProps {
-  registered: boolean;
+  registerd: boolean;
   type: string;
 }
-const AuthSuccess: React.FC<AuthSuccessProps> = ({ registered, type }) => {
-  const text = registered ? '로그인' : '회원가입';
+const AuthSuccess: React.FC<AuthSuccessProps> = ({ registerd, type }) => {
+  const text = registerd ? '로그인' : '회원가입';
   return (
     <AuthSuccessBlock>
       <CheckIcon className="icon" />

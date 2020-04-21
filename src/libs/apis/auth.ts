@@ -1,6 +1,6 @@
 import apiClient from './apiClient';
 
-export type SendAuthPayloadResponse = { registered: boolean };
+export type SendAuthPayloadResponse = { registerd: boolean };
 export type GetRegisterTokenResponse = {
   payload: string;
   email: string;
