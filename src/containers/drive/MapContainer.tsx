@@ -1,29 +1,33 @@
 import React from 'react';
 import SideBar from 'react-sidebar';
-import Map from '../../components/drive/Map';
+
+import { useDispatch } from 'react-redux';
+
+import MapView from '../../components/drive/MapView';
 import MenuButton from '../../components/drive/MenuButton';
 import SidebarContainer from './SidebarContainer';
 import useLoadMap from './hooks/useLoadMap';
 
+import { actions } from '../../modules/map';
+import PlaceBottomModalContainer from './PlaceBottomModalContainer';
+
 const SidebarStyled = {
   sidebar: {
     backgroundColor: 'white',
-    width: '280px',
+    width: '256px',
+    height: '100%',
     zIndex: '10',
   },
 };
 
-type EnhancerPositionCallback<P = Position, M = any> = (
-  postion: P,
-  map: M,
-) => void;
-
 interface MapContainerProps {}
 const MapContainer: React.FC<MapContainerProps> = () => {
-  const [open, setToggle] = React.useState(false);
-  const [kakaoMap, setKakaoMap] = React.useState<any>(null);
-  const [{ kakaoMapObj }] = useLoadMap();
+  const dispatch = useDispatch();
 
+  const [open, setToggle] = React.useState(false);
+  // 카카오 sdk 객체
+  const [{ kakaoMapObj }] = useLoadMap();
+  // marker 객체
   const onCloseToggle = React.useCallback(() => {
     setToggle(false);
   }, [setToggle]);
@@ -44,55 +48,11 @@ const MapContainer: React.FC<MapContainerProps> = () => {
         center: new LatLng(33.450701, 126.570667),
       });
 
-      setKakaoMap(map);
-
-      if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(
-          position => successGeolocation(position, map),
-          error => errorGeolocation(error),
-          {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0,
-          },
-        );
-      } else {
-        const position = new kakaoMapObj.maps.LatLng(33.450701, 126.570667);
-        handelMarker(position, map);
-      }
+      dispatch(actions.setKakaoMapsObj(kakaoMapObj));
+      dispatch(actions.setKakaoMap(map));
     },
     [kakaoMapObj],
   );
-
-  const handelMarker = (position: any, map: any) => {
-    const {
-      maps: { Size, MarkerImage, Marker },
-    } = kakaoMapObj;
-
-    const imageSize = new Size(24, 35);
-    const markerImage = new MarkerImage(
-      'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-      imageSize,
-    );
-
-    new Marker({
-      map,
-      position,
-      image: markerImage,
-    });
-
-    map.setCenter(position);
-  };
-
-  const successGeolocation: EnhancerPositionCallback = (position, map) => {
-    const { latitude, longitude } = position.coords;
-    const locationPosition = new kakaoMapObj.maps.LatLng(latitude, longitude);
-    handelMarker(locationPosition, map);
-  };
-
-  const errorGeolocation: PositionErrorCallback = error => {
-    console.error(error);
-  };
 
   return (
     <React.Fragment>
@@ -104,7 +64,9 @@ const MapContainer: React.FC<MapContainerProps> = () => {
         styles={SidebarStyled}
       >
         <MenuButton onToggle={onOpenToggle} />
-        <Map targetLoad={loadMapRef} />
+        <MapView targetLoad={loadMapRef}>
+          <PlaceBottomModalContainer />
+        </MapView>
       </SideBar>
     </React.Fragment>
   );

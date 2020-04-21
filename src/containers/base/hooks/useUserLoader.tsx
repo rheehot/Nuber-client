@@ -13,14 +13,12 @@ const useUserLoader = () => {
   const prevUser = useSelector((state: RootState) => state.core.user);
 
   const user = getCurrentUser.data ? getCurrentUser.data.auth : undefined;
-  console.log(user);
   if (ssrEnabled && user) {
     dispatch(actions.setUser(user));
     dispatch(actions.setLoggedStatus(true));
   }
 
   useEffect(() => {
-    console.log(user, prevUser);
     if (user === undefined) return () => {};
     if (prevUser !== user) {
       const userData = JSON.stringify(user);

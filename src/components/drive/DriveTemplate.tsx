@@ -6,7 +6,7 @@ const DriveTemplateBlock = styled.div`
   }
 
   .Sidebar_Overlay {
-    z-index: 2 !important;
+    z-index: 9 !important;
   }
 `;
 
