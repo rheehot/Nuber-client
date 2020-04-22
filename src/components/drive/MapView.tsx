@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { actions } from '../../modules/map';
+import { actions as placeActions } from '../../modules/place';
 import { RootState } from '../../modules';
 
 const MapViewBlock = styled.div`
@@ -20,6 +20,9 @@ interface MapViewProps {
   targetLoad: (element: HTMLDivElement | null) => void;
 }
 const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
+  const kakaoGeocoder = React.useRef<any>(null);
+  const kakaoMarker = React.useRef<any>(null);
+
   const { kakaoMap, kakaoMapsObj } = useSelector(
     (state: RootState) => state.map,
   );
@@ -28,6 +31,7 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
 
   React.useEffect(() => {
     if (!kakaoMap || !kakaoMapsObj) return;
+    kakaoGeocoder.current = new kakaoMapsObj.maps.services.Geocoder();
     kakaoMapsObj.maps.event.addListener(kakaoMap, 'click', onMarkerMapClick);
     onSetCurrentPosition();
     return () => {
@@ -77,11 +81,22 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
       position,
     });
 
-    dispatch(actions.setKakaoMarker(marker));
+    kakaoMarker.current = marker;
   };
 
   const onMarkerMapClick = (e: any) => {
-    console.log(e);
+    const { latLng } = e;
+    const coordsLng = latLng.getLng();
+    const coordsLat = latLng.getLat();
+    kakaoGeocoder.current.coord2Address(
+      coordsLng,
+      coordsLat,
+      (result: any, status: any) => {
+        if (status === kakaoMapsObj.maps.services.Status.OK) {
+          dispatch(placeActions.setBottomModalInfo(result[0]));
+        }
+      },
+    );
   };
 
   return (

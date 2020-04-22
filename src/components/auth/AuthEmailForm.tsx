@@ -15,7 +15,7 @@ const AuthEmailFormWrapper = styled.div`
       a {
         margin-left: 0.25rem;
         margin-right: 0.25rem;
-        color: ${palette.teal7};
+        color: ${palette.gray6};
         text-decoration: none;
         cursor: pointer;
       }
