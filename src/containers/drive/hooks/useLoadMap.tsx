@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { loadScript } from '../../../libs/apollo/utils';
+import { loadScript } from '../../../libs/utils';
 
 interface MapState {
   kakaoMapLoaded: boolean;

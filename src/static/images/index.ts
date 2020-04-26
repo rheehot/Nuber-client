@@ -9,4 +9,5 @@ export { default as undrawQuiteTown } from './undraw_quite_town_mg2q.svg';
 export { default as undrawSmallTown } from './undraw_small_town_rxs3.svg';
 export { default as kakaoIcon } from './sns_kakao.svg';
 export { default as userThumbnail } from './user-thumbnail.png';
+export { default as markerIcon } from './marker.png';
 export { uberlogo, headerfannel };

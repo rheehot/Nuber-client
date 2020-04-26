@@ -75,7 +75,7 @@ interface ToggleProps {
 
 const ToggleDriving = styled.button<ToggleProps>`
   -webkit-appearance: none;
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.isDriving ? palette.gray5 : palette.blue5};
   width: 100%;
   color: white;
@@ -84,7 +84,7 @@ const ToggleDriving = styled.button<ToggleProps>`
   padding: 15px 0px;
   cursor: pointer;
   &:hover {
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.isDriving ? palette.gray7 : palette.blue7};
   }
 `;
@@ -114,7 +114,6 @@ const Sidebar: React.FC<SidebarProps> = ({}) => {
       <SettingLink to="/trips">나의 프로필</SettingLink>
       <SettingLink to="/trips">나의 여행</SettingLink>
       <SettingLink to="/settings">설정</SettingLink>
-      <ToggleDriving isDriving={false}>운행시작</ToggleDriving>
       <HowTo />
     </SidebarBlcok>
   );
