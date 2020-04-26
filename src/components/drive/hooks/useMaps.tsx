@@ -13,7 +13,7 @@ interface MapState {
   duration: string;
   price?: string;
   hasRequest: boolean;
-  request?: string;
+  request: any;
   status: StatusType;
 }
 
@@ -28,7 +28,7 @@ const initialState: MapState = {
   duration: '',
   price: '',
   hasRequest: false,
-  request: '',
+  request: null,
   status: 'idle',
 };
 
@@ -60,16 +60,32 @@ type SetToAddressAction = {
   };
 };
 
+type SetRequestAction = {
+  type: 'SET_REQUEST';
+  payload: {
+    request: any;
+    hasRequest: boolean;
+  };
+};
+
 type PayloadActions =
   | ResetAction
   | SetAddressAction
   | SetLatLngAction
+  | SetRequestAction
   | SetToAddressAction;
 
 function reducer(state: MapState, action: PayloadActions) {
   switch (action.type) {
     case 'RESET': {
       return initialState;
+    }
+    case 'SET_REQUEST': {
+      return {
+        ...state,
+        request: action.payload.request,
+        hasRequest: action.payload.hasRequest,
+      };
     }
     case 'SET_TO_ADDRESS': {
       return {
@@ -99,6 +115,16 @@ function reducer(state: MapState, action: PayloadActions) {
 
 export default function useMaps() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const onRequestChange = useCallback((request: any) => {
+    dispatch({
+      type: 'SET_REQUEST',
+      payload: {
+        request,
+        hasRequest: true,
+      },
+    });
+  }, []);
+
   const onAddressChange = useCallback(
     (latitude: number, longitude: number, address: string) => {
       dispatch({
@@ -137,11 +163,13 @@ export default function useMaps() {
     onAddressChange,
     onLatLngChange,
     onToAddressChange,
+    onRequestChange,
   ] as [
     MapState,
     typeof dispatch,
     typeof onAddressChange,
     typeof onLatLngChange,
     typeof onToAddressChange,
+    typeof onRequestChange,
   ];
 }

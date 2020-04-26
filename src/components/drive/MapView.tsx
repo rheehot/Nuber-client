@@ -1,4 +1,5 @@
 import React from 'react';
+import throttle from 'lodash/throttle';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
@@ -35,6 +36,7 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
     onAddressChange,
     onLatLngChange,
     onToAddressChange,
+    onRequestChange,
   ] = useMaps();
 
   const kakaoGeocoderRef = React.useRef<any>(null);
@@ -61,6 +63,12 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
       const lng = LatLng.getLng();
       handleNotGeo(lng, lat);
     }
+
+    window.addEventListener(
+      'deviceorientation',
+      throttle(handleRotation, 5000, { trailing: true, leading: true }),
+      true,
+    );
     return () => {
       if (!kakaoMap || !kakaoMapsObj) {
         kakaoMapsObj.maps.event.removeListener(
@@ -70,7 +78,7 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
         );
       }
     };
-  }, [kakaoMap]);
+  }, [kakaoMap, state]);
 
   const reverseGeocode = async (
     lng: number,
@@ -87,15 +95,17 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
         (result: any, status: string) => {
           if (status === services.Status.OK) {
             const firstAddress = result[0].address.address_name;
-            return resolve({
+            resolve({
               address: firstAddress,
               error: false,
             });
+            return;
           }
-          return reject({
+          resolve({
             address: '',
             error: true,
           });
+          return;
         },
       );
     });
@@ -111,7 +121,7 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
         loadMap();
       }
     },
-    [kakaoMap],
+    [kakaoMap, state],
   );
 
   const handleGeoSuccess: PositionCallback = React.useCallback(
@@ -121,9 +131,7 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
       } = position;
       const { address, error } = await reverseGeocode(longitude, latitude);
       if (!error) {
-        console.log('before', state);
         onAddressChange(latitude, longitude, address);
-        console.log('aftre', state);
         loadMap();
       }
     },
@@ -153,12 +161,22 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
       return;
     }
     toast.error('Cant get location');
+  }, [kakaoMap, state]);
+
+  const handleCenterChange = React.useCallback(() => {
+    const { status } = state;
+    if (status === 'choosingFromMap') {
+      const LatLng = kakaoMap.getCenter();
+      const lat = LatLng.getLat();
+      const lng = LatLng.getLng();
+      onLatLngChange(lat, lng);
+      hidrateAddress();
+    }
   }, [kakaoMap]);
 
   const loadMap = React.useCallback(() => {
-    console.log(state);
     const {
-      maps: { Marker, Size, MarkerImage, event, LatLng },
+      maps: { Marker, Size, MarkerImage, LatLng },
     } = kakaoMapsObj;
     const latLng = new LatLng(state.lat, state.lng);
     kakaoMap.setCenter(latLng);
@@ -182,7 +200,11 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
     dragMarkerRef.current = dragMarker;
     dragMarkerRef.current.setMap(kakaoMap);
 
-    event.addListener(kakaoMap, 'dragend', handleCenterChange);
+    kakaoMapsObj.maps.event.addListener(
+      kakaoMap,
+      'dragend',
+      handleCenterChange,
+    );
 
     // 현재의 위치가 변경이 되면 해당 변경 이벤트로 위치값을 가져온다
     navigator.geolocation.watchPosition(
@@ -191,18 +213,15 @@ const MapView: React.FC<MapViewProps> = ({ targetLoad, children }) => {
       locationOptions,
     );
     // TODO 드라이빙 모드냐 아니야
-  }, [kakaoMap]);
+  }, [kakaoMap, state]);
 
-  const handleCenterChange = React.useCallback(() => {
-    const { status } = state;
-    if (status === 'choosingFromMap') {
-      const LatLng = kakaoMap.getCenter();
-      const lat = LatLng.getLat();
-      const lng = LatLng.getLng();
-      onLatLngChange(lat, lng);
-      hidrateAddress();
-    }
-  }, [kakaoMap]);
+  const handleRotation = (e: DeviceOrientationEvent) => {
+    const { alpha } = e;
+    console.log(alpha);
+    // TODO: API
+  };
+
+  const handleRideRequest = (request: any) => onRequestChange(request);
 
   return (
     <MapViewBlock className="Map" ref={targetLoad}>
